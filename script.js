@@ -5,9 +5,15 @@ const updateContentElement = document.getElementById("update-content");
 async function getLastCounterStrikeUpdate() {
     await new Promise(r => setTimeout(r, 1000));
     const url = "https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=730";
+    const corsProxy = "https://api.codetabs.com/v1/proxy?quest=";
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(`${corsProxy}${url}`);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
         const data = await response.json();
         const lastUpdate = data.appnews.newsitems[0];
 
