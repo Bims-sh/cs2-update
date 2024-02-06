@@ -5,10 +5,9 @@ const updateContentElement = document.getElementById("update-content");
 async function getLastCounterStrikeUpdate() {
     await new Promise(r => setTimeout(r, 1000));
     const url = "https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=730";
-    const corsProxy = "https://cors-anywhere.herokuapp.com/";
 
     try {
-        const response = await fetch(corsProxy + url);
+        const response = await fetch(url);
         const data = await response.json();
         const lastUpdate = data.appnews.newsitems[0];
 
