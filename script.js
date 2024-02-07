@@ -30,9 +30,9 @@ async function getLastCounterStrikeUpdate() {
             addInLineBreaks: true
         });
 
-        convertedContent.replace("\";", "\"").replace("';", "'");
+        const convertedContentHtml = convertedContent.html.replace("\";", "\"").replace("';", "'");
 
-        updateContentElement.innerHTML = convertedContent.html;
+        updateContentElement.innerHTML = convertedContentHtml;
     } catch (error) {
         console.error(`Error fetching update data: ${error}`);
     }
