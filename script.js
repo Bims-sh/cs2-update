@@ -30,7 +30,7 @@ async function getLastCounterStrikeUpdate() {
             addInLineBreaks: true
         });
 
-        const convertedContentHtml = convertedContent.html.replace("\";", "\"").replace("';", "'");
+        const convertedContentHtml = convertedContent.html.replace(/&quot&#59;/g, '"').replace(/&#39&#59;/g, "'");
 
         updateContentElement.innerHTML = convertedContentHtml;
     } catch (error) {
