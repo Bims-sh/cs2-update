@@ -106,6 +106,55 @@ var XBBCODE = (function() {
                 return '</span>';
             }
         },
+        // Header tags added in by Bims (https://github.com/Bims-sh)
+        "h1": {
+            openTag: function (params, content) {
+                return '<h1>';
+            },
+            closeTag: function (params, content) {
+                return '</h1>';
+            }
+        },
+        "h2": {
+            openTag: function (params, content) {
+                return '<h2>';
+            },
+            closeTag: function (params, content) {
+                return '</h2>';
+            }
+        },
+        "h3": {
+            openTag: function (params, content) {
+                return '<h3>';
+            },
+            closeTags: function (params, content) {
+                return '</h3>';
+            }
+        },
+        "h4": {
+            openTag: function (params, content) {
+                return '<h4>';
+            },
+            closeTags: function (params, content) {
+                return '</h4>';
+            }
+        },
+        "h5": {
+            openTag: function (params, content) {
+                return '<h5>';
+            },
+            closeTags: function (params, content) {
+                return '</h5>';
+            }
+        },
+        "h6": {
+            openTag: function (params, content) {
+                return '<h6>';
+            },
+            closeTags: function (params, content) {
+                return '</h6>';
+            }
+        },
         /*
             This tag does nothing and is here mostly to be used as a classification for
             the bbcode input when evaluating parent-child tag relationships
