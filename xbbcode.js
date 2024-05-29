@@ -239,6 +239,47 @@ var XBBCODE = (function() {
             },
             displayContent: false
         },
+        // Video tag added in by Bims (https://github.com/Bims.sh)
+        "video": {
+            openTag: function (params, content) {
+                params = params || '';
+                const pairs = params.split(' ');
+                const videoParams = {};
+
+                pairs.forEach(pair => {
+                    const [key, value] = pair.split('=');
+                    if (key && value) {
+                        videoParams[key] = value.replace(/"/g, '');
+                    }
+                });
+
+                let videoTag = '<video';
+
+                if (videoParams.autoplay === 'true') {
+                    videoTag += ' autoplay';
+                }
+                if (videoParams.controls === 'true') {
+                    videoTag += ' controls';
+                }
+                if (videoParams.poster === 'true' && urlPattern.test(videoParams.poster)) {
+                    videoTag += ` poster="${videoParams.poster}"`;
+                }
+
+                videoTag += '>';
+
+                if (videoParams.mp4) {
+                    videoTag += `<source src="${videoParams.mp4}" type="video/mp4">`;
+                }
+                if (videoParams.webm) {
+                    videoTag += `<source src="${videoParams.webm}" type="video/webm">`;
+                }
+
+                return videoTag;
+            },
+            closeTag: function (params, content) {
+                return '</video>';
+            },
+        },
         "justify": {
             openTag: function(params,content) {
                 return '<span class="xbbcode-justify">';

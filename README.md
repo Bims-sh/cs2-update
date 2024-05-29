@@ -1,5 +1,5 @@
 # CS2 Update Counter
-we will get an update soon... surely
+Small page of mine that grabs the recent CS2 updates directly from steam and displays them nicely in one place. 
 
 ## Credits
 - [Extendible-BBCode-Parser](https://github.com/patorjk/Extendible-BBCode-Parser)

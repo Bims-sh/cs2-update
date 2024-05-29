@@ -1,6 +1,15 @@
-const lastUpdateElement = document.getElementById("last-update");
+const fetchBoxElement = document.getElementById("fetch-box");
 const updateTitleElement = document.getElementById("update-title");
+const updateTitleTextElement = document.getElementById("update-title-text");
 const updateContentElement = document.getElementById("update-content");
+const updateInfoElement = document.getElementById("update-info");
+const updateDateRelative = document.getElementById("update-date-relative");
+const navButtons = document.getElementById("nav-buttons");
+const prevButton = document.getElementById("prev-update");
+const nextButton = document.getElementById("next-update");
+
+let updates = [];
+let currentIndex = 0;
 
 async function getLastCounterStrikeUpdate() {
     await new Promise(r => setTimeout(r, 1000));
@@ -15,28 +24,52 @@ async function getLastCounterStrikeUpdate() {
         }
 
         const data = await response.json();
-        const lastUpdate = data.appnews.newsitems[0];
 
-        console.log(`%c${lastUpdate.title}`, "color: #f00; font-size: 20px; font-weight: bold;");
-        console.log(lastUpdate);
+        updates = data.appnews.newsitems.filter(update => update.feedname === "steam_community_announcements");
 
-        lastUpdateElement.innerHTML = convertUnixTimestampToRelativeTime(lastUpdate.date);
-        updateTitleElement.innerHTML = `<a href="${lastUpdate.url}" target="_blank">${lastUpdate.title}</a>`;
-
-        const updateContent = lastUpdate.contents;
-        const convertedContent = XBBCODE.process({
-            text: updateContent,
-            removeMisalignedTags: true,
-            addInLineBreaks: true
-        });
-
-        const convertedContentHtml = convertedContent.html.replace(/&quot&#59;/g, '"').replace(/&#39&#59;/g, "'");
-
-        updateContentElement.innerHTML = convertedContentHtml;
+        if (updates.length > 0) {
+            displayUpdate(currentIndex);
+        }
     } catch (error) {
         console.error(`Error fetching update data: ${error}`);
     }
 }
+
+function displayUpdate(index) {
+    const update = updates[index];
+
+    fetchBoxElement.classList.add("hidden");
+    updateInfoElement.classList.remove("hidden");
+    navButtons.classList.remove("hidden");;
+    updateTitleTextElement.innerHTML = `<a href="${update.url}" target="_blank">${update.title}</a>`;
+    updateDateRelative.innerHTML = "(" + convertUnixTimestampToRelativeTime(update.date) + ")";
+
+    const updateContent = update.contents;
+    const convertedContent = XBBCODE.process({
+        text: updateContent,
+        removeMisalignedTags: true,
+        addInLineBreaks: true
+    });
+
+    updateContentElement.innerHTML = convertedContent.html.replace(/&quot&#59;/g, '"').replace(/&#39&#59;/g, "'");
+
+    prevButton.disabled = index === 0;
+    nextButton.disabled = index === updates.length - 1;
+}
+
+prevButton.addEventListener('click', () => {
+    if (currentIndex > 0) {
+        currentIndex--;
+        displayUpdate(currentIndex);
+    }
+});
+
+nextButton.addEventListener('click', () => {
+    if (currentIndex < updates.length - 1) {
+        currentIndex++;
+        displayUpdate(currentIndex);
+    }
+});
 
 function convertUnixTimestampToRelativeTime(timestamp) {
     const currentTimestamp = Math.floor(Date.now() / 1000);
